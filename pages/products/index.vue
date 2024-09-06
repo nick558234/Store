@@ -1,69 +1,114 @@
 <template>
-  <div class="flex flex-col items-center">
-    <ProductForm @product-added="handleProductAdded" />
-    <ul class="mt-4">
-      <li v-for="product in products" :key="product.id" class="mt-2">
-        {{ product.name }} - {{ product.price }}
-        <button @click="addToCart(product.id)" class="ml-4 bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-2 rounded">Add to Cart</button>
-      </li>
-    </ul>
-    <button @click="toggleCart()" class="mt-4 bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">Show Cart</button>
+  <div class="flex h-screen">
+    <Aside :toggleCart="toggleCart" />
+    <div class="flex-1 flex flex-col">
+      <Header />
+      <div class="p-5">
+        <ProductForm @product-added="handleProductAdded" />
+        <ProductView
+          :products="products"
+          :addToCart="addToCart"
+          :toggleCart="toggleCart"
+        />
 
-    <!-- Popup Modal -->
-    <div v-if="showCart" class="overflow fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 overflow-y-auto">
-      <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-lg overflow-y-auto">
-        <button @click="toggleCart()" class="absolute top-4 right-4 text-gray-600 hover:text-gray-900">
-          x
-        </button>
-        <Cart />
+        <!-- Clear buttons -->
+        <div class="mt-4 flex space-x-4">
+          <button
+            @click="clearProducts()"
+            class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+          >
+            Clear Products
+          </button>
+          <button
+            @click="clearCart()"
+            class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+          >
+            Clear Cart
+          </button>
+        </div>
+        <!-- Popup Modal for Cart -->
+        <div
+          v-if="showCart"
+          class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 overflow-y-auto"
+        >
+          <div
+            class="bg-white p-8 rounded-lg shadow-lg w-full max-w-lg overflow-y-auto"
+          >
+                      <button
+              @click="toggleCart()"
+              class="absolute top-4 right-4 text-gray-600 hover:text-gray-900 bg-transparent p-2 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+              aria-label="Close"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                stroke-width="2"
+                color="red"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
+            <Cart />
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
-
 
 const products = ref([]);
 const cart = ref([]);
 const showCart = ref(false);
 
-// Load products and cart from localStorage when the component is mounted
 onMounted(() => {
-  // Retrieve the stored products from localStorage
-  const storedProducts = localStorage.getItem('products');
-  // If there are stored products, parse them and set the products array
-  if (storedProducts) {
-    products.value = JSON.parse(storedProducts);
-  }
+  const storedProducts = localStorage.getItem("products");
+  if (storedProducts) products.value = JSON.parse(storedProducts);
 
-  // Retrieve the stored cart from localStorage
-  const storedCart = localStorage.getItem('cart');
-  // If there is a stored cart, parse it and set the cart array
-  if (storedCart) {
-    cart.value = JSON.parse(storedCart);
-  }
+  const storedCart = localStorage.getItem("cart");
+  if (storedCart) cart.value = JSON.parse(storedCart);
 });
 
+// Handlers
 const handleProductAdded = (newProduct) => {
   products.value.push(newProduct);
-  // Save products to localStorage
-  localStorage.setItem('products', JSON.stringify(products.value));
+  localStorage.setItem("products", JSON.stringify(products.value));
 };
 
 const addToCart = (productId) => {
-  const product = products.value.find(p => p.id === productId);
+  const product = products.value.find((p) => p.id === productId);
   if (product) {
     cart.value.push(product);
-    // Save cart to localStorage
-    localStorage.setItem('cart', JSON.stringify(cart.value));
+    localStorage.setItem("cart", JSON.stringify(cart.value));
   }
 };
 
 const toggleCart = () => {
   showCart.value = !showCart.value;
 };
+
+const clearProducts = () => {
+  products.value = [];
+  localStorage.removeItem("products");
+};
+
+const clearCart = () => {
+  cart.value = [];
+  localStorage.removeItem("cart");
+};
+
+// Ensure the page uses the 'default' layout
+definePageMeta({
+  layout: "default",
+});
 </script>
 
 <style scoped>

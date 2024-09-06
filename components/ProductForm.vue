@@ -1,6 +1,6 @@
 <!-- ProductForm.vue -->
 <template>
-  <div>
+  <div class="">
     <label for="name" class="block">Name</label>
     <input id="name" placeholder="Naam" v-model="productData.name" class="border rounded-md p-2" />
     <label for="price" class="block mt-2">Price</label>
@@ -15,6 +15,7 @@
     <input id="sku" placeholder="SKU" v-model="productData.sku" class="border rounded-md p-2" />
     <label for="description" class="block mt-2">Description</label>
     <textarea id="description" placeholder="Beschrijving" v-model="productData.description" class="border rounded-md p-2"></textarea>
+    <br>
     <button @click="addProduct" class="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Product toevoegen</button>
   </div>
 </template>

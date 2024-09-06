@@ -1,7 +1,7 @@
 <template>
   <div class="flex h-screen">
     <!-- Sidebar -->
-<Aside />
+    <Aside />
 
     <!-- Main Content -->
     <div class="flex-1 flex flex-col">
@@ -22,6 +22,7 @@
 useHead({
   title: 'Winkelvooraadbeheer'
 })
+
 </script>
 
 <style scoped>
