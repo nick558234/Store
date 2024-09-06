@@ -7,7 +7,7 @@
           <NuxtLink :to="'/'" class="hover:bg-gray-700 p-2 rounded block">Home</NuxtLink>
         </li>
         <li class="mb-4">
-          <NuxtLink :to="'/products'" class="hover:bg-gray-700 p-2 rounded block">Producten toevoegen</NuxtLink>
+          <NuxtLink :to="'/products'" class="hover:bg-gray-700 p-2 rounded block">Add products</NuxtLink>
         </li>
         <li class="mb-4">
           <button @click="toggleCart" class="hover:bg-gray-700 p-2 rounded block">Cart</button>

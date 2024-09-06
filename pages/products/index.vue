@@ -71,11 +71,20 @@ const showCart = ref(false);
 
 onMounted(() => {
   const storedProducts = localStorage.getItem("products");
-  if (storedProducts) products.value = JSON.parse(storedProducts);
+  if (storedProducts) {
+    products.value = JSON.parse(storedProducts);
+  } else {
+    console.log("No stored products found.");
+  }
 
   const storedCart = localStorage.getItem("cart");
-  if (storedCart) cart.value = JSON.parse(storedCart);
+  if (storedCart) {
+    cart.value = JSON.parse(storedCart);
+  } else {
+    console.log("No stored cart found.");
+  }
 });
+
 
 // Handlers
 const handleProductAdded = (newProduct) => {
