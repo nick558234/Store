@@ -4,15 +4,13 @@
     <label for="name" class="block">Name</label>
     <input id="name" placeholder="Naam" v-model="productData.name" class="border rounded-md p-2" />
     <label for="price" class="block mt-2">Price</label>
-    <input id="price" placeholder="Prijs" v-model="productData.price" class="border rounded-md p-2" />
+    <input id="price" type="number" placeholder="Prijs" v-model="productData.price" class="border rounded-md p-2" />
     <label for="vooraad" class="block mt-2">Vooraad</label>
-    <input id="vooraad" placeholder="Vooraad" v-model="productData.vooraad" class="border rounded-md p-2" />
+    <input id="vooraad" type="number" placeholder="Vooraad" v-model="productData.vooraad" class="border rounded-md p-2" />
     <label for="categorie" class="block mt-2">Categorie</label>
     <input id="categorie" placeholder="Categorie" v-model="productData.categorie" class="border rounded-md p-2" />
     <label for="soldOut" class="block mt-2">Sold Out</label>
-    <input id="soldOut" type="checkbox"  v-if="productData.vooraad === '0' || productData.vooraad === null"
-   v-model="isSoldOut" class="mt-1" />
-
+    <input id="soldOut" type="checkbox" v-if="productData.vooraad === 0 || productData.vooraad === null" v-model="isSoldOut" class="mt-1" />
     <label for="sku" class="block mt-2">SKU</label>
     <input id="sku" placeholder="SKU" v-model="productData.sku" class="border rounded-md p-2" />
     <label for="description" class="block mt-2">Description</label>
@@ -20,24 +18,33 @@
     <br>
     <button @click="addProduct" class="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Product toevoegen</button>
   </div>
-
 </template>
 
-<script setup>
-import { ref, defineEmits } from 'vue';
+<script setup lang="ts">
+import { ref, defineEmits, computed } from 'vue';
+
+// Define the type for product data
+interface ProductData {
+  name: string;
+  price: number;
+  vooraad: number;
+  categorie: string;
+  soldOut: boolean;
+  sku: string;
+  description: string;
+}
 
 const emit = defineEmits(['product-added']);
 
-const productData = ref({
+const productData = ref<ProductData>({
   name: '',
-  price: '',
-  vooraad: '',
+  price: 0,
+  vooraad: 0,
   categorie: '',
   soldOut: false,
   sku: '',
   description: ''
 });
-
 
 const isSoldOut = computed({
   get() {
@@ -47,6 +54,7 @@ const isSoldOut = computed({
     productData.value.soldOut = value;
   }
 });
+
 const addProduct = () => {
   const newProduct = {
     id: Date.now(),
@@ -66,3 +74,7 @@ const addProduct = () => {
   };
 };
 </script>
+
+<style scoped>
+/* Add any additional styles here */
+</style>
