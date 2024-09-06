@@ -92,15 +92,18 @@ const addToCart = (productId) => {
 };
 
 const toggleCart = () => {
+  // Toggle the visibility of the cart modal
   showCart.value = !showCart.value;
 };
 
 const clearProducts = () => {
+  // remove all products from the list
   products.value = [];
   localStorage.removeItem("products");
 };
 
 const clearCart = () => {
+  // remove all products from the cart
   cart.value = [];
   localStorage.removeItem("cart");
 };

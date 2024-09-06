@@ -10,7 +10,9 @@
     <label for="categorie" class="block mt-2">Categorie</label>
     <input id="categorie" placeholder="Categorie" v-model="productData.categorie" class="border rounded-md p-2" />
     <label for="soldOut" class="block mt-2">Sold Out</label>
-    <input id="soldOut" type="checkbox" v-model="productData.soldOut" class="mt-1" />
+    <input id="soldOut" type="checkbox"  v-if="productData.vooraad === '0' || productData.vooraad === null"
+   v-model="isSoldOut" class="mt-1" />
+
     <label for="sku" class="block mt-2">SKU</label>
     <input id="sku" placeholder="SKU" v-model="productData.sku" class="border rounded-md p-2" />
     <label for="description" class="block mt-2">Description</label>
@@ -18,6 +20,7 @@
     <br>
     <button @click="addProduct" class="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Product toevoegen</button>
   </div>
+
 </template>
 
 <script setup>
@@ -35,6 +38,15 @@ const productData = ref({
   description: ''
 });
 
+
+const isSoldOut = computed({
+  get() {
+    return productData.value.vooraad === '0' || productData.value.vooraad === null;
+  },
+  set(value) {
+    productData.value.soldOut = value;
+  }
+});
 const addProduct = () => {
   const newProduct = {
     id: Date.now(),
